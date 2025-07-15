@@ -25,6 +25,11 @@ pkgs.stdenv.mkDerivation {
       url = "https://st.suckless.org/patches/scrollback/st-scrollback-mouse-20191024-a2c479c.diff";
       sha256 = "MZRY2YAZXRj6D4GmiY1Y+NBGxf+YKrhy10H1S7YOJn0=";
     })
+
+    (pkgs.fetchurl {
+      url = "https://st.suckless.org/patches/anysize/st-anysize-20220718-baa9357.diff";
+      sha256 = "sha256-eO8MEPRb3uaCTtBznG+LaojXqlcj4eT422rQgpxopfo="; 
+    })
   ];
 
   buildInputs = with pkgs; [
@@ -38,7 +43,7 @@ pkgs.stdenv.mkDerivation {
   ];
 
   propagatedBuildInputs = with pkgs; [
-    (nerdfonts.override { fonts = [ "Meslo" ]; })
+    nerd-fonts.meslo-lg
     (callPackage ../scroll/scroll.nix {})
   ];
 
