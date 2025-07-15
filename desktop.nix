@@ -14,7 +14,7 @@ in {
       customDWM
       customDMenu
       customST
-
+      feh
       xclip
 
       xrdp
@@ -34,8 +34,13 @@ in {
         variant = "";
       }; 
 
-      displayManager.lightdm.enable = true;
-      
+      displayManager = {
+      	lightdm.enable = true;
+        sessionCommands = ''
+          ${pkgs.feh}/bin/feh --bg-scale /etc/nixos/wallpaper.png
+        '';
+      };
+
       windowManager.session = [{
         name = "dwm";
         start = ''
