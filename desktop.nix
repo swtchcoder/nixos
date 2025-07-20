@@ -3,6 +3,7 @@ let
   customDWM = import ./dwm/pkg.nix { inherit pkgs; };
   customDMenu = import ./dmenu/dmenu.nix { inherit pkgs; };
   customST = import ./st/st.nix { inherit pkgs; };
+  customSlstatus = import ./slstatus/slstatus.nix { inherit pkgs; };
 in { 
   environment = {
     sessionVariables = {
@@ -12,6 +13,7 @@ in {
 
     systemPackages = with pkgs; [
       customDWM
+      customSlstatus
       customDMenu
       customST
       feh
@@ -34,18 +36,14 @@ in {
         variant = "";
       }; 
 
-      displayManager = {
-      	lightdm.enable = true;
-        sessionCommands = ''
-          ${pkgs.feh}/bin/feh --bg-scale /etc/nixos/wallpaper.png
-        '';
-      };
+      displayManager.lightdm.enable = true;
 
       windowManager.session = [{
         name = "dwm";
         start = ''
-          ${customDWM}/bin/dwm &  
-          waitPID=$!
+          ${pkgs.feh}/bin/feh --bg-scale /etc/nixos/wallpaper.png
+          ${customSlstatus}/bin/slstatus &
+          exec ${customDWM}/bin/dwm
         '';
       }];
     };
@@ -71,6 +69,6 @@ in {
   };
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "Meslo" ]; })
+    nerd-fonts.meslo-lg
   ];
 }
