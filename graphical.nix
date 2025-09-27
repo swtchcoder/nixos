@@ -22,7 +22,7 @@ in {
         amdvlk
         nvidia-x11
       ];
-    }
+    };
   };
 
   environment = {

@@ -5,7 +5,7 @@
 
   outputs = { nixpkgs, ... }@inputs: {
     nixosConfigurations = {
-      graphical = nixpkgs.lib.nixosSystem {
+      gaming = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./configuration.nix
