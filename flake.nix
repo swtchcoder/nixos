@@ -5,19 +5,28 @@
 
   outputs = { nixpkgs, ... }@inputs: {
     nixosConfigurations = {
-      desktop = nixpkgs.lib.nixosSystem {
+      graphical = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./default.nix
-          ./desktop.nix
+          ./configuration.nix
+          ./graphical.nix
+          ./gaming.nix
         ];
       };
 
-      server = nixpkgs.lib.nixosSystem {
+      graphical = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./default.nix
-          ./server.nix
+          ./configuration.nix
+          ./graphical.nix
+        ];
+      };
+
+      headless = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./configuration.nix
+          ./headless.nix
         ];
       };
     };

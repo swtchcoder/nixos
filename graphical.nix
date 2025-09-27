@@ -1,15 +1,35 @@
 { pkgs, ... }: 
 let
-  customDWM = import ./dwm/pkg.nix { inherit pkgs; };
-  customDMenu = import ./dmenu/dmenu.nix { inherit pkgs; };
-  customST = import ./st/st.nix { inherit pkgs; };
-  customSlstatus = import ./slstatus/slstatus.nix { inherit pkgs; };
-in { 
+  customDWM = import ./pkgs/dwm/default.nix { inherit pkgs; };
+  customDMenu = import ./pkgs/dmenu/default.nix { inherit pkgs; };
+  customST = import ./pkgs/st/default.nix { inherit pkgs; };
+  customSlstatus = import ./pkgs/slstatus/default.nix { inherit pkgs; };
+in {
+  hardware = {
+    nvidia = {
+      modesetting.enable = true;
+      optimus_prime = true;
+      package = pkgs.linuxPackages.nvidia_x11;
+      cudaSupport = true;
+    };
+
+    opengl = {
+      enable = true;
+      extraPackages = with pkgs; [
+        vulkan-loader
+        vulkan-tools
+        libvulkan
+        amdvlk
+        nvidia-x11
+      ];
+    }
+  };
+
   environment = {
     sessionVariables = {
       QT_STYLE_OVERRIDE = "adwaita-dark";
       GTK_THEME = "Adwaita-dark";
-    }; 
+    };
 
     systemPackages = with pkgs; [
       customDWM
@@ -18,14 +38,10 @@ in {
       customST
       feh
       xclip
-
       xrdp
-
       firefox
     ];
   };
-
-  networking.hostName = "desktop-0";
 
   services = {
     xserver = {
@@ -41,34 +57,34 @@ in {
       windowManager.session = [{
         name = "dwm";
         start = ''
-          ${pkgs.feh}/bin/feh --bg-scale /etc/nixos/wallpaper.png
+          ${pkgs.feh}/bin/feh --bg-scale /etc/nixos/wallpapers/wallpaper.png
           ${customSlstatus}/bin/slstatus &
           exec ${customDWM}/bin/dwm
         '';
       }];
+
+      videoDrivers = [ "amdgpu" "nvidia" "intel" ];
     };
 
     pipewire = {
       enable = true;
-      
+
       audio.enable = true;
       pulse.enable = true;
       jack.enable = true;
-      
+
       alsa = {
         enable = true;
         support32Bit = true;
       };
     };
 
-    xrdp = {
-      enable = true;
+    xrdp = { # remote desktop - disabled by default
+      enable = false;
       defaultWindowManager = "dwm";
       openFirewall = true;
     };
-  };
 
-  fonts.packages = with pkgs; [
-    nerd-fonts.meslo-lg
-  ];
+    udev.packages = [ pkgs.mesa ];
+  };
 }

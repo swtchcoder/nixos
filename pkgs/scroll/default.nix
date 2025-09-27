@@ -9,7 +9,7 @@ pkgs.stdenv.mkDerivation {
   };
 
   patches = [
-    ./mouse.patch
+    ./patches/mouse.diff
   ];
 
   installPhase = ''

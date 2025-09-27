@@ -26,6 +26,8 @@
   };
 
   networking = {
+    hostName = "nixos";
+    
     networkmanager.enable = true;
 
     firewall.enable = true;
@@ -55,7 +57,7 @@
   users.users.switchcodeur = {
     isNormalUser = true;
     description = "switchcodeur";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "video" ];
     # packages = with pkgs; [];
   };
 
@@ -75,5 +77,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "unstable"; # Did you read the comment?
 }

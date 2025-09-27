@@ -4,7 +4,7 @@ let
 in
 pkgs.stdenv.mkDerivation rec {
   name = "dwm-custom";
-  src = ./.;
+  src = ./src;
 
   buildInputs = with pkgs; [
     xorg.libX11

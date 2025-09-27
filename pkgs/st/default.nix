@@ -9,7 +9,7 @@ pkgs.stdenv.mkDerivation {
   };
 
   patches = [
-    ./meslonf.patch
+    ./patches/meslonf.diff
 
     (pkgs.fetchurl {
       url = "https://st.suckless.org/patches/gruvbox/st-gruvbox-dark-0.8.5.diff";
