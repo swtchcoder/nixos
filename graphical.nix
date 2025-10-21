@@ -57,7 +57,7 @@ in {
       windowManager.session = [{
         name = "dwm";
         start = ''
-          ${pkgs.feh}/bin/feh --bg-scale /etc/nixos/wallpapers/wallpaper.png
+          ${pkgs.feh}/bin/feh --bg-scale /etc/nixos/assets/wallpaper.png
           ${customSlstatus}/bin/slstatus &
           exec ${customDWM}/bin/dwm
         '';
