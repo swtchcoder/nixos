@@ -1,14 +1,13 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { pkgs, ... }:
-{
-  imports =
-    [
-      ./hardware-configuration.nix 
-    ];
-
+let 
+  dotfiles = builtins.fetchGit {
+    url = "https://github.com/swtchcoder/dotfiles";
+    rev = "73c21e900397d8ab2551d5a08189978c5e5723ae";
+  };
+in {
+  imports = [
+    ./hardware-configuration.nix 
+  ];
   boot.loader = {
     grub = {
       enable = true;
@@ -16,30 +15,20 @@
       useOSProber = true;
       efiSupport = true;
     };
-
     efi.canTouchEfiVariables = true;
   };
-
   nix = {
     settings.experimental-features = [ "nix-command" "flakes" ];
     gc.automatic = true;
   };
-
   networking = {
     hostName = "nixos";
-    
     networkmanager.enable = true;
-
     firewall.enable = true;
   };
-
-  # Set your time zone.
   time.timeZone = "Europe/Paris";
-
-  # Select internationalisation properties.
   i18n = {
     defaultLocale = "en_US.UTF-8";
-
     extraLocaleSettings = {
       LC_ADDRESS        = "en_US.UTF-8";
       LC_IDENTIFICATION = "en_US.UTF-8";
@@ -52,30 +41,38 @@
       LC_TIME           = "en_US.UTF-8";
     };
   };
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.switchcodeur = {
     isNormalUser = true;
     description = "switchcodeur";
     extraGroups = [ "networkmanager" "wheel" "docker" "video" ];
-    # packages = with pkgs; [];
   };
-
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    neovim
-    git
-  ];
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "unstable"; # Did you read the comment?
+  services.udisks2.enable = true;
+  home-manager.users.switchcodeur = {
+    home = {
+      stateVersion = "24.11";
+      packages = with pkgs; [
+        neovim
+        tmux
+        udiskie
+      ];
+      file = {
+        ".config/nvim".source = "${dotfiles}/nvim";
+        ".config/tmux".source = "${dotfiles}/tmux";
+      };
+    };
+    services.udiskie = {
+      enable = true;
+      tray = "never";
+      notify = true;
+      automount = true;
+    };
+  };
+  fonts = {
+    fontconfig.enable = true;
+    packages = with pkgs; [
+      nerd-fonts.meslo-lg
+    ];
+  };
+  system.stateVersion = "24.11";
 }
