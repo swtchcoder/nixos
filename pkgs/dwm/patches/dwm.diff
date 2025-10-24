@@ -1,5 +1,5 @@
 diff --git a/config.def.h b/config.def.h
-index 9efa774..911155a 100644
+index 9efa774..6c7011e 100644
 --- a/config.def.h
 +++ b/config.def.h
 @@ -1,21 +1,23 @@
@@ -36,7 +36,16 @@ index 9efa774..911155a 100644
  };
  
  /* tagging */
-@@ -57,44 +59,66 @@ static const Layout layouts[] = {
+@@ -45,7 +47,7 @@ static const Layout layouts[] = {
+ };
+ 
+ /* key definitions */
+-#define MODKEY Mod1Mask
++#define MODKEY Mod4Mask
+ #define TAGKEYS(KEY,TAG) \
+ 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+ 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
+@@ -57,44 +59,65 @@ static const Layout layouts[] = {
  
  /* commands */
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -49,7 +58,6 @@ index 9efa774..911155a 100644
 +static const char *micmutecmd[]   = { "wpctl", "set-mute",   "@DEFAULT_AUDIO_SOURCE@", "toggle", NULL };
 +static const char *lightupcmd[]   = { "brightnessctl",   "s", "+5%", NULL };
 +static const char *lightdowncmd[] = { "brightnessctl",   "s", "5%-", NULL };
-+
  
  static const Key keys[] = {
 -	/* modifier                     key        function        argument */
@@ -88,7 +96,7 @@ index 9efa774..911155a 100644
 -	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 +	/* modifier                     key                       function        argument */
 +	{ MODKEY,                       XK_r,                     spawn,          {.v = dmenucmd } },
-+	{ MODKEY|ShiftMask,             XK_q,                     spawn,          {.v = termcmd } },
++	{ MODKEY,                       XK_q,                     spawn,          {.v = termcmd } },
 +	{ MODKEY,                       XK_b,                     togglebar,      {0} },
 +	{ MODKEY,                       XK_j,                     focusstack,     {.i = +1 } },
 +	{ MODKEY,                       XK_k,                     focusstack,     {.i = -1 } },
@@ -98,7 +106,7 @@ index 9efa774..911155a 100644
 +	{ MODKEY,                       XK_l,                     setmfact,       {.f = +0.05} },
 +	{ MODKEY,                       XK_Return,                zoom,           {0} },
 +	{ MODKEY,                       XK_Tab,                   view,           {0} },
-+	{ MODKEY|ShiftMask,             XK_c,                     killclient,     {0} },
++	{ MODKEY,                       XK_c,                     killclient,     {0} },
 +	{ MODKEY,                       XK_t,                     setlayout,      {.v = &layouts[0]} },
 +	{ MODKEY,                       XK_f,                     setlayout,      {.v = &layouts[1]} },
 +	{ MODKEY,                       XK_m,                     setlayout,      {.v = &layouts[2]} },
@@ -138,7 +146,7 @@ index 9efa774..911155a 100644
  };
  
  /* button definitions */
-@@ -114,3 +138,4 @@ static const Button buttons[] = {
+@@ -114,3 +137,4 @@ static const Button buttons[] = {
  	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
  };
  

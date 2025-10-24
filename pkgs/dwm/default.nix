@@ -8,7 +8,7 @@ pkgs.stdenv.mkDerivation rec {
   };
   
   patches = [
-    ./dwm.diff
+    ./patches/dwm.diff
   ];
 
   buildInputs = with pkgs; [
