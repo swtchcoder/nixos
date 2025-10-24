@@ -1,10 +1,15 @@
 { pkgs, ... }:
-let
-  configFile = ./config.h;
-in
 pkgs.stdenv.mkDerivation rec {
   name = "dwm-custom";
-  src = ./src;
+  
+  src = pkgs.fetchurl {
+    url = "https://dl.suckless.org/dwm/dwm-6.5.tar.gz";
+    sha256 = "Ideev6ny+5MUGDbCZmy4H0eExp1k5/GyNS+blwuglyk=";
+  };
+  
+  patches = [
+    ./dwm.diff
+  ];
 
   buildInputs = with pkgs; [
     xorg.libX11
@@ -13,10 +18,6 @@ pkgs.stdenv.mkDerivation rec {
     freetype
     fontconfig
   ];
-
-  prePatch = ''
-    cp ${configFile} config.h
-  '';
 
   installFlags = [ "PREFIX=$(out)" ];
 }
