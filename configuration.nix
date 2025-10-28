@@ -297,6 +297,7 @@ fi
 				'';
 				".xinitrc".text = ''
 #!/bin/sh
+${pkgs.udiskie}/bin/udiskie &
 ${pkgs.feh}/bin/feh --bg-scale /etc/nixos/assets/wallpaper.png &
 ${slstatus-patched}/bin/slstatus &
 exec ${dwm-patched}/bin/dwm
@@ -311,12 +312,7 @@ exec ${dwm-patched}/bin/dwm
 				'';
 			};
 		};
-		services.udiskie = {
-			enable = true;
-			tray = "never";
-			notify = true;
-			automount = true;
-		};
+		services.udiskie.enable = true;
 # DESKTOP
 		dconf = {
 			enable = true;
